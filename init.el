@@ -172,14 +172,6 @@
 ;; bind show/hide to a double-click on the left fringe (just past the first letter)
 ;;(global-set-key (kbd "<left-fringe> <double-mouse-1>") 'toggle-hiding)
 
-(add-hook 'c-mode-common-hook   'hs-minor-mode)
-(add-hook 'python-mode-hook     'hs-minor-mode)
-(add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
-(add-hook 'java-mode-hook       'hs-minor-mode)
-(add-hook 'lisp-mode-hook       'hs-minor-mode)
-(add-hook 'perl-mode-hook       'hs-minor-mode)
-(add-hook 'sh-mode-hook         'hs-minor-mode)
-
 ;; Set whether isearch opens folded comments, code, or both
 ;; where x is code, comments, t (both), or nil (neither)
 (setq hs-isearch-open 'x)
@@ -190,8 +182,10 @@
   (save-excursion
     (hs-show-block)))
 
+;; Origami ;;;;;;;;;;
 (require 'origami)
 
+;; Yafolding ;;;;;;;;
 ;; seems to do what I want
 (require 'yafolding)
 
@@ -204,17 +198,31 @@
 
 (global-set-key (kbd "<left-fringe> <double-mouse-1>") 'yafolding-toggle-element)
 
-;; hideshowvis ;;;;;;;;;;;;;;;;;
-;(autoload 'hideshowvis-enable "hideshowvis" "Highlight foldable regions")
-;(autoload 'hideshowvis-minor-mode
-;  "hideshowvis"
-;  "Will indicate regions foldable with hideshow in the fringe."
-;  'interactive)
-;(dolist (hook (list 'emacs-lisp-mode-hook
-;		    'c++-mode-hook
-;		    'python-mode-hook))
-;  (add-hook hook 'hideshowvis-enable))
-;(autoload 'hideshowvis-symbols "hideshowvis")
+;; hideshowvis ;;;;;;
+(autoload 'hideshowvis-enable "hideshowvis" "Highlight foldable regions")
+(autoload 'hideshowvis-minor-mode
+  "hideshowvis"
+  "Will indicate regions foldable with hideshow in the fringe."
+  'interactive)
+;;(dolist (hook (list 'emacs-lisp-mode-hook
+;;		    'c++-mode-hook
+;;		    'python-mode-hook))
+;;  (add-hook hook 'hideshowvis-enable))
+(autoload 'hideshowvis-symbols "hideshowvis")
+
+
+;; Add hooks for activating folding modes automatically when opening
+;; source files.
+(add-hook 'c-mode-common-hook   'hs-minor-mode)
+(add-hook 'python-mode-hook     'hs-minor-mode)
+(add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
+(add-hook 'java-mode-hook       'hs-minor-mode)
+(add-hook 'lisp-mode-hook       'hs-minor-mode)
+(add-hook 'perl-mode-hook       'hs-minor-mode)
+(add-hook 'sh-mode-hook         'hs-minor-mode)
+
+(add-hook 'python-mode-hook     'yafolding-mode)
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                    Other Coding Stuff                            ;;
