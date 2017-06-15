@@ -12,7 +12,9 @@
 ;;; manual.  You can read this manual with the online Info browser: type
 ;;; `C-h i' or select "Emacs Info" from the "Help" menu.
 
-
+(setq settings-dir
+     (expand-file-name "settings" user-emacs-directory))
+(add-to-list 'load-path settings-dir)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                      MacOSX Customization                        ;;
@@ -67,10 +69,10 @@
 (show-paren-mode 1)
 
 ;; scroll one line at a time (less "jumpy" than defaults)
-;;(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
-(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
+;;(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
 (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
-;;(setq scroll-step 1) ;; keyboard scroll one line at a time
+(setq scroll-step 1) ;; keyboard scroll one line at a time
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -111,6 +113,11 @@
 
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                      XML Customization                           ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defalias 'xml-mode 'sgml-mode 
+    "Use `sgml-mode' instead of nXML's `xml-mode'.")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                    ANSI Color Customization                      ;;
@@ -161,9 +168,9 @@
 (load-library "hideshow")
 (global-set-key (kbd "C-+") 'toggle-hiding)
 (global-set-key (kbd "C-\\") 'toggle-selective-display)
-(global-set-key (kbd "C-c C-d") 'toggle-hiding)
+;;(global-set-key (kbd "C-c C-d") 'toggle-hiding)
 ;; bind show/hide to a double-click on the left fringe (just past the first letter)
-(global-set-key (kbd "<left-fringe> <double-mouse-1>") 'toggle-hiding)
+;;(global-set-key (kbd "<left-fringe> <double-mouse-1>") 'toggle-hiding)
 
 (add-hook 'c-mode-common-hook   'hs-minor-mode)
 (add-hook 'python-mode-hook     'hs-minor-mode)
@@ -182,13 +189,39 @@
   "hideshow-expand affected block when using goto-line in a collapsed buffer"
   (save-excursion
     (hs-show-block)))
-  
+
+(require 'origami)
+
+;; seems to do what I want
+(require 'yafolding)
+
+(add-hook 'prog-mode-hook
+          (lambda () (yafolding-mode)))
+
+(lambda ()
+    (yafolding-show-all)
+    (delete-trailing-whitespace))
+
+(global-set-key (kbd "<left-fringe> <double-mouse-1>") 'yafolding-toggle-element)
+
+;; hideshowvis ;;;;;;;;;;;;;;;;;
+;(autoload 'hideshowvis-enable "hideshowvis" "Highlight foldable regions")
+;(autoload 'hideshowvis-minor-mode
+;  "hideshowvis"
+;  "Will indicate regions foldable with hideshow in the fringe."
+;  'interactive)
+;(dolist (hook (list 'emacs-lisp-mode-hook
+;		    'c++-mode-hook
+;		    'python-mode-hook))
+;  (add-hook hook 'hideshowvis-enable))
+;(autoload 'hideshowvis-symbols "hideshowvis")
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                    Other Coding Stuff                            ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Comment / Uncomment regions of text
-(transient-mark-mode)
+;; Always show the region being marked / highlighted.
+(transient-mark-mode 1)
 
 
 ;; This is a company-backend for emacs-jedi.
@@ -330,7 +363,7 @@ Version 2016-07-18"
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (yaml-mode windsize latex-preview-pane idle-highlight-mode highlight-symbol)))
+    (yafolding origami yaml-mode windsize latex-preview-pane idle-highlight-mode highlight-symbol)))
  '(preview-orientation (quote below)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
