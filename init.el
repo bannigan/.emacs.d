@@ -75,6 +75,12 @@
 (setq scroll-step 1) ;; keyboard scroll one line at a time
 
 
+(push (substitute-in-file-name "path-to-ztree-directory") load-path)
+(require 'ztree)
+
+;; Turn on line numbers on the left side, for all buffers.
+(global-linum-mode 1)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                      Matlab Customization                        ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -93,6 +99,7 @@
 (setq matlab-shell-command "/Applications/MATLAB_R2016a.app/bin/matlab")
 (setq matlab-shell-command-switches (list "-nodesktop"))
 
+(add-hook 'matlab-mode-hook 'turn-off-auto-fill)
 
 ;(autoload 'octave-mode "octave-mod" nil t)
 ;(setq auto-mode-alist
@@ -371,7 +378,7 @@ Version 2016-07-18"
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (yafolding origami yaml-mode windsize latex-preview-pane idle-highlight-mode highlight-symbol)))
+    (ztree org-fstree yafolding origami yaml-mode windsize latex-preview-pane idle-highlight-mode highlight-symbol)))
  '(preview-orientation (quote below)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
